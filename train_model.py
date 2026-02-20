@@ -69,6 +69,8 @@ preds = inference(model, X_test)
 p, r, fb = compute_model_metrics(y_test, preds)
 print(f"Precision: {p:.4f} | Recall: {r:.4f} | F1: {fb:.4f}")
 
+if preds is None:
+    raise ValueError("Inference returned None. Check train_model and X_test")
 # TODO: compute the performance on model slices using the performance_on_categorical_slice function
 # iterate through the categorical features
 with open("slice_output.txt", "w") as f:  # overwrite previous
