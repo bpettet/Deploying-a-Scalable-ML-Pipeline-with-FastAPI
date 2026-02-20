@@ -13,14 +13,13 @@ from ml.model import (
     train_model,
 )
 # TODO: load the cencus.csv data
-project_path = "Your path here"
-data_path = os.path.join(project_path, "data", "census.csv")
+data_path = os.path.join("data", "census.csv")  # assumes your repo has a data folder
 print(data_path)
-data = None # your code here
+data = pd.read_csv(data_path)
 
 # TODO: split the provided data to have a train dataset and a test dataset
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
-train, test = None, None# Your code here
+train, test = train_test_split(data, test_size=0.20, random_state=42)
 
 # DO NOT MODIFY
 cat_features = [
@@ -36,11 +35,11 @@ cat_features = [
 
 # TODO: use the process_data function provided to process the data.
 X_train, y_train, encoder, lb = process_data(
-    # your code here
-    # use the train dataset 
-    # use training=True
-    # do not need to pass encoder and lb as input
-    )
+    X=train,
+    categorical_features=cat_features,
+    label="salary",
+    training=True
+)
 
 X_test, y_test, _, _ = process_data(
     test,
@@ -52,12 +51,13 @@ X_test, y_test, _, _ = process_data(
 )
 
 # TODO: use the train_model function to train the model on the training dataset
-model = None # your code here
+model = train_model(X_train, y_train)
+preds = inference(model, X_test)
 
 # save the model and the encoder
-model_path = os.path.join(project_path, "model", "model.pkl")
+model_path = os.path.join("model", "model.pkl")
 save_model(model, model_path)
-encoder_path = os.path.join(project_path, "model", "encoder.pkl")
+encoder_path = os.path.join("model", "encoder.pkl")
 save_model(encoder, encoder_path)
 
 # load the model
